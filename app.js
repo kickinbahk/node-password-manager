@@ -1,21 +1,34 @@
 var storage = require("node-persist");
 storage.initSync();
 
-// storage.setItemSync("name", "Josiah");
+// account.name
+// account.username
+// account.password
 
-console.log("Starting Password Manager");
 
-// storage.setItemSync("accounts", [{
-//     username: "Fred", 
-//     balance: 30
-// }]);
 
-var accounts = storage.getItemSync("accounts");
+function createAccount(account) {
+    var accounts = storage.getItemSync("accounts");
+    if (typeof accounts === "undefined"){
+        accounts = [];
+    }
+    accounts.push(account);
+    storage.setItemSync("accounts", accounts);
+    return account
+}
 
-// accounts.push({
-//     username: "Sandy",
-//     balance: 100
-// });
+function getAccount(accountName) {
+    var accounts = storage.getItemSync("accounts");
+    var foundUser;
+    accounts.forEach(function(account){        
+        if(account.name === accountName) {
+            foundUser = account;
+        }
+    });
+    console.log(foundUser);
+    return foundUser;
+}
 
-storage.setItemSync("accounts", accounts);
-console.log(accounts);
+//createAccount(sandy);
+
+getAccount("Facebook");
