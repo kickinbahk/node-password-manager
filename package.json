@@ -1,0 +1,19 @@
+{
+  "name": "password-manager",
+  "version": "1.0.0",
+  "description": "Manage your passwords locally",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kickinbahk/node-password-manager.git"
+  },
+  "author": "Josiah Mory",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kickinbahk/node-password-manager/issues"
+  },
+  "homepage": "https://github.com/kickinbahk/node-password-manager#readme"
+}
