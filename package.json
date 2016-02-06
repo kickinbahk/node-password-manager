@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/kickinbahk/node-password-manager/issues"
   },
-  "homepage": "https://github.com/kickinbahk/node-password-manager#readme"
+  "homepage": "https://github.com/kickinbahk/node-password-manager#readme",
+  "dependencies": {
+    "node-persist": "0.0.6"
+  }
 }
