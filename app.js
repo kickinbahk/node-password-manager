@@ -1,11 +1,18 @@
 var storage = require("node-persist");
+
 storage.initSync();
+
+// create
+//   --name
+//   -- username
+//   password
+
+// get
+//   --name
 
 // account.name
 // account.username
 // account.password
-
-
 
 function createAccount(account) {
     var accounts = storage.getItemSync("accounts");
