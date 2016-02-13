@@ -8,7 +8,7 @@ var argv = require("yargs")
                 name: {
                     demand: true,
                     alias: 'n',
-                    description: "Accout name (e.g: Twitter)",
+                    description: "Account name (e.g: Twitter)",
                     type: "string"
                 },
                 username: {
@@ -25,23 +25,23 @@ var argv = require("yargs")
                 },
                 masterPassword: {
                     demand: true,
-                    alias: 'mp',
+                    alias: 'm',
                     description: "qwf123",
                     type: "string"
                 }
             }).help("help");
         })
-        .command("get", "Get an existing account", function(yargs){
+        .command("get", "Get an existing account", function(yargs) {
             yargs.options({
                 name: {
                     demand: true,
                     alias: 'n',
-                    description: "Accout name (e.g: Twitter)",
+                    description: "Account name (e.g: Twitter)",
                     type: "string"
                 },
                 masterPassword: {
                     demand: true,
-                    alias: 'mp',
+                    alias: 'm',
                     description: "qwf123",
                     type: "string"
                 }
@@ -51,11 +51,12 @@ var argv = require("yargs")
         .argv;
 var command = argv._[0];
 
-function getAccouts (masterPassword) {
-    var encryptedAccount = storage.getItemsync("accounts");
-    if (typeof accounts !== "undefined") {
+function getAccounts (masterPassword) {
+    var encryptedAccount = storage.getItemSync("accounts");
+    var accounts = [];
+    if (typeof encryptedAccount !== "undefined") {
         var bytes = crypto.AES.decrypt(encryptedAccount, masterPassword);
-        var accounts = JSON.parse(bytes.toString(crypto.enc.Utf8));
+        accounts = JSON.parse(bytes.toString(crypto.enc.Utf8));
     }
     return accounts;
 }
@@ -63,7 +64,7 @@ function getAccouts (masterPassword) {
 
 function saveAccounts (accounts, masterPassword) {
     var encryptedAccounts = crypto.AES.encrypt(JSON.stringify(accounts), masterPassword);
-    storage.setItemSync("accounts", encryptedAccounts);
+    storage.setItemSync("accounts", encryptedAccounts.toString());
     return accounts;
 }
 
@@ -77,7 +78,7 @@ function createAccount(account, masterPassword) {
 function getAccount(accountName, masterPassword) {
     var accounts = getAccounts(masterPassword);
     var foundUser;
-    accounts.forEach(function(account){        
+    accounts.forEach(function(account) {
         if(account.name === accountName) {
             foundUser = account;
         }
@@ -90,12 +91,12 @@ if (command === "create") {
     var createdAccount = createAccount({
         name: argv.name,
         username: argv.username,
-        password: argv.password       
-    }, argb.masterPassword);
+        password: argv.password
+    }, argv.masterPassword);
     console.log("Account Created!");
     console.log(createdAccount);
 } else if (command === "get") {
-    var foundAccount = getAccount(argv.name, argv.masterPassword);        
+    var foundAccount = getAccount(argv.name, argv.masterPassword);
     if (typeof foundAccount === 'undefined') {
         console.log("Account Not Found");
     } else {
