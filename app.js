@@ -1,6 +1,7 @@
 var storage = require("node-persist");
 storage.initSync();
 
+var crypto = require('crypto-js');
 var argv = require("yargs")
         .command("create", "Create a new account", function(yargs) {
             yargs.options({
@@ -51,27 +52,30 @@ var argv = require("yargs")
 var command = argv._[0];
 
 function getAccouts (masterPassword) {
-
-
+    var encryptedAccount = storage.getItemsync("accounts");
+    if (typeof accounts !== "undefined") {
+        var bytes = crypto.AES.decrypt(encryptedAccount, masterPassword);
+        var accounts = JSON.parse(bytes.toString(crypto.enc.Utf8));
+    }
+    return accounts;
 }
 
 
 function saveAccounts (accounts, masterPassword) {
-
+    var encryptedAccounts = crypto.AES.encrypt(JSON.stringify(accounts), masterPassword);
+    storage.setItemSync("accounts", encryptedAccounts);
+    return accounts;
 }
 
 function createAccount(account, masterPassword) {
-    var accounts = storage.getItemSync("accounts");
-    if (typeof accounts === "undefined"){
-        accounts = [];
-    }
+    var accounts = getAccounts(masterPassword);
     accounts.push(account);
-    storage.setItemSync("accounts", accounts);
-    return account
+    saveAccounts(accounts, masterPassword);
+    return account;
 }
 
 function getAccount(accountName, masterPassword) {
-    var accounts = storage.getItemSync("accounts");
+    var accounts = getAccounts(masterPassword);
     var foundUser;
     accounts.forEach(function(account){        
         if(account.name === accountName) {
@@ -86,7 +90,7 @@ if (command === "create") {
     var createdAccount = createAccount({
         name: argv.name,
         username: argv.username,
-        password: argv.password,       
+        password: argv.password       
     }, argb.masterPassword);
     console.log("Account Created!");
     console.log(createdAccount);
