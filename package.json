@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/kickinbahk/node-password-manager#readme",
   "dependencies": {
+    "crypto-js": "^3.1.6",
     "node-persist": "0.0.6",
     "yargs": "^3.15.0"
   }
